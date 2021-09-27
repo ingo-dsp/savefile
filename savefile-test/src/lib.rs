@@ -1161,3 +1161,8 @@ pub fn test_pathbuf2() {
     assert_roundtrip(x);
 
 }
+
+#[test]
+pub fn lldb_debug_test() {
+    lldb_debug_test_func();
+}

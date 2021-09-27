@@ -5,3 +5,10 @@ pub use {
     super::IntrospectionResult, super::Introspector, super::IntrospectorNavCommand, super::Removed, super::ReprC, super::SavefileError, super::Schema, super::SchemaEnum,
     super::SchemaPrimitive, super::SchemaStruct, super::Serialize, super::Serializer, super::Variant, super::WithSchema,
 };
+
+
+/// It should be possible to place breakpoint
+/// on println-invocation in this function.
+pub fn lldb_debug_test_func() {
+    println!("running lldb_debug_test_func");
+}
