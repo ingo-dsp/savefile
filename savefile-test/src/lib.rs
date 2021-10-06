@@ -1162,6 +1162,21 @@ pub fn test_pathbuf2() {
 
 }
 
+#[derive(SavefileNoIntrospect,Debug,PartialEq)]
+struct ExampleWithoutAutomaticIntrospect {
+    x: u32
+}
+impl Introspect for ExampleWithoutAutomaticIntrospect {
+    fn introspect_value(&self) -> String {
+        "Example".into()
+    }
+
+    fn introspect_child<'a>(&'a self, _index: usize) -> Option<Box<dyn IntrospectItem<'a> + 'a>> {
+        None
+    }
+}
+
+
 #[test]
 pub fn lldb_debug_test() {
     lldb_debug_test_func();
