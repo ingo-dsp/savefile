@@ -22,6 +22,8 @@ license = "MIT/Apache-2.0"
 edition = "2018"
 
 [features]
+compression = ["bzip2"]
+
 # Enable this to reduce risk of crashing on corrupt input. Provides sanity checks for sizes of objects.
 # This is mostly to be able to run fuzzers against the deserializers without them being guaranteed to easily find out-of-memory crashes.
 size_sanity_checks = []
@@ -39,7 +41,7 @@ indexmap ="1.6"
 parking_lot = { version = "0.11" }
 ring = "0.16.9"
 rand="0.7"
-bzip2 = "0.3.2"
+bzip2 = { version = "0.3.2", optional = true }
 
 
 [dev-dependencies]
@@ -47,6 +49,3 @@ savefile-derive = { path="../savefile-derive" }
 
 [build-dependencies]
 rustc_version="0.2"
-
-
-

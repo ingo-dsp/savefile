@@ -714,6 +714,8 @@ extern crate indexmap;
 use indexmap::IndexMap;
 use indexmap::IndexSet;
 extern crate bit_vec;
+
+#[cfg(feature = "compression")]
 extern crate bzip2;
 
 
@@ -1325,11 +1327,17 @@ impl<'a> Serializer<'a> {
         // 9 + 2 + 4 = 15
 
         {
+            #[cfg(feature = "compression")]
             let mut temp;
             let writer: &mut dyn Write = if with_compression {
-                writer.write_u8(1)?; //15 + 1 = 16
-                temp = bzip2::write::BzEncoder::new(writer, Compression::Best);
-                &mut temp
+                #[cfg(feature = "compression")]
+                {
+                    writer.write_u8(1)?; //15 + 1 = 16
+                    temp = bzip2::write::BzEncoder::new(writer, Compression::Best);
+                    &mut temp
+                }
+                #[cfg(not(feature = "compression"))]
+                panic!("enable feature \"compression\" to use bzip2 compression")
             } else {
                 writer.write_u8(0)?;
                 writer
@@ -1493,10 +1501,11 @@ impl<'a> Deserializer<'a> {
         }
         let with_compression = reader.read_u8()? != 0;
 
-        let mut temp;
+        // let mut temp;
         let reader: &mut dyn Read = if with_compression {
-            temp = bzip2::read::BzDecoder::new(reader);
-            &mut temp
+            // temp = bzip2::read::BzDecoder::new(reader);
+            // &mut temp
+            panic!("enable feature \"compression\" to use bzip2 compression")
         } else {
             reader
         };
@@ -4230,7 +4239,9 @@ impl<T: Deserialize> Deserialize for Arc<T> {
     }
 }
 
+#[cfg(feature = "compression")]
 use bzip2::Compression;
+
 use std::any::{Any, TypeId};
 use std::cell::Cell;
 use std::cell::RefCell;
